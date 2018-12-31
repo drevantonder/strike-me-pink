@@ -25,7 +25,7 @@ export default {
   props: {
     audio: {
       required: true,
-      type: File
+      type: HTMLAudioElement
     },
     paused: {
       type: Boolean,
@@ -41,7 +41,7 @@ export default {
     },
     volume: {
       type: Number,
-      default: () => 100
+      default: () => 1
     }
   },
 
@@ -54,9 +54,14 @@ export default {
 
   mounted () {
     this.audio.currentTime = this.currentTime
-    this.audio.paused = this.paused
     this.audio.loop = this.loop
     this.audio.volume = this.volume
+
+    if (this.paused) {
+      this.audio.pause()
+    } else {
+      this.audio.play()
+    }
 
     this.duration = this.audio.duration
 
