@@ -1,28 +1,22 @@
 <template>
   <div id="app">
-    <el-container>
-      <el-aside>
-        <side-nav />
-      </el-aside>
-    </el-container>
+    <router-view />
   </div>
 </template>
 
 <script>
-import SideNav from './components/SideNav.vue'
 
 export default {
-  name: 'app',
-  components: {
-    SideNav
-  }
+  name: 'app'
 }
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Oxygen');
+
 body {
  margin: 0;
- font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+ font-family: 'Oxygen', sans-serif;
 }
 
 #app {
