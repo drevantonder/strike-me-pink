@@ -1,4 +1,4 @@
-# sound-desk
+# strike-me-pink
 
 > An electron-vue project
 
