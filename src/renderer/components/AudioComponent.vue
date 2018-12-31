@@ -21,34 +21,49 @@
 </template>
 
 <script>
-import TestAudioFile from '../assets/test.mp3'
-
 export default {
+  props: {
+    audio: {
+      required: true,
+      type: File
+    },
+    paused: {
+      type: Boolean,
+      default: () => true
+    },
+    currentTime: {
+      type: Number,
+      default: () => 0
+    },
+    loop: {
+      type: Boolean,
+      default: () => false
+    },
+    volume: {
+      type: Number,
+      default: () => 100
+    }
+  },
+
   data () {
     return {
-      audio: new Audio(TestAudioFile),
-      paused: true,
-      currentTime: 0,
       duration: 0,
-      loop: false,
-      showVolume: false,
-      volume: 0
+      showVolume: false
     }
   },
 
   mounted () {
-    this.audio.play()
     this.audio.currentTime = this.currentTime
+    this.audio.paused = this.paused
+    this.audio.loop = this.loop
+    this.audio.volume = this.volume
 
     this.duration = this.audio.duration
-    this.paused = this.audio.paused
-    this.loop = this.audio.loop
-    this.volume = this.audio.volume
 
     var that = this
-    this.audio.addEventListener('play', () => { that.paused = false })
-    this.audio.addEventListener('pause', () => { that.paused = true })
-    this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
+    this.audio.addEventListener('play', () => { that.$emit('update:paused', false) })
+    this.audio.addEventListener('pause', () => { that.$emit('update:paused', true) })
+    this.audio.addEventListener('timeupdate', () => { that.$emit('update:current-time', that.audio.currentTime) })
     this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
   },
 
