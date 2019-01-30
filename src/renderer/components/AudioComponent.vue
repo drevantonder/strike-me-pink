@@ -26,29 +26,17 @@ export default {
     audio: {
       required: true,
       type: HTMLAudioElement
-    },
-    paused: {
-      type: Boolean,
-      default: () => true
-    },
-    currentTime: {
-      type: Number,
-      default: () => 0
-    },
-    loop: {
-      type: Boolean,
-      default: () => false
-    },
-    volume: {
-      type: Number,
-      default: () => 1
     }
   },
 
   data () {
     return {
       duration: 0,
-      showVolume: false
+      showVolume: false,
+      currentTime: 0,
+      loop: false,
+      volume: 1,
+      paused: false
     }
   },
 
@@ -66,9 +54,9 @@ export default {
     this.duration = this.audio.duration
 
     var that = this
-    this.audio.addEventListener('play', () => { that.$emit('update:paused', false) })
-    this.audio.addEventListener('pause', () => { that.$emit('update:paused', true) })
-    this.audio.addEventListener('timeupdate', () => { that.$emit('update:current-time', that.audio.currentTime) })
+    this.audio.addEventListener('play', () => { that.paused = false })
+    this.audio.addEventListener('pause', () => { that.paused = true })
+    this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
     this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
   },
 
