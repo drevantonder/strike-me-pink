@@ -11,3 +11,4 @@ thumbs.db
 !.gitkeep
 
 .npmrc
+yarn-error.log
