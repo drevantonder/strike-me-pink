@@ -2,6 +2,15 @@
 
 > An electron-vue project
 
+### Usage
+
+#### Adding an Audio File
+Either drag and drop the file onto the application or select add and browse or drag and drop
+Then give it a name and set repeat and volume.
+
+#### Editing an Audio Object
+Just right click on the object or click edit
+
 #### Build Setup
 
 ``` bash
