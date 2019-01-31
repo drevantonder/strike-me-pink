@@ -1,5 +1,7 @@
 <template>
-  <audio-component :audio="audio" />
+  <drop @drop="handleDrop">
+    <audio-component :audio="audio" />
+  </drop>
 </template>
 
 <script>
@@ -14,6 +16,13 @@ export default {
   data () {
     return {
       audio: new Audio(TestAudioFile)
+    }
+  },
+
+  methods: {
+    handleDrop (data, event) {
+      event.preventDefault()
+      const files = event.dataTransfer.files
     }
   }
 }

@@ -8,6 +8,9 @@ import store from './store'
 
 import './components/bulma'
 
+import VueDragDrop from 'vue-drag-drop'
+Vue.use(VueDragDrop)
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
 
