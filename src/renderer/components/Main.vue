@@ -1,10 +1,9 @@
 <template>
-  <main>
+  <drop @drop="handleDrop" class="drop">
     <add-audio :file-path.sync="filePath" />
-    <drop @drop="handleDrop">
-      <audio-component :audio="audio" />
-    </drop>
-  </main>
+    
+    <audio-component :audio="audio" />
+  </drop>
 </template>
 
 <script>
@@ -33,3 +32,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.drop {
+  height: 100%;
+  width: 100%;
+}
+</style>
