@@ -12,3 +12,5 @@ thumbs.db
 
 .npmrc
 yarn-error.log
+
+static/

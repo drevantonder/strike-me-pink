@@ -2,14 +2,15 @@
   <drop @drop="handleDrop" class="drop">
     <add-audio :file-path.sync="filePath" />
     
-    <audio-component :audio="audio" />
+    <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
   </drop>
 </template>
 
 <script>
-import TestAudioFile from '../assets/test.mp3'
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
+
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -19,9 +20,14 @@ export default {
 
   data () {
     return {
-      audio: new Audio(TestAudioFile),
       filePath: undefined
     }
+  },
+
+  computed: {
+    ...mapState({
+      audio: state => state.audio.audio
+    })
   },
 
   methods: {

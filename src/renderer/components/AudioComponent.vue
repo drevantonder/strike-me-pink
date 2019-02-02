@@ -21,11 +21,13 @@
 </template>
 
 <script>
+import path from 'path'
+
 export default {
   props: {
-    audio: {
+    audioInfo: {
       required: true,
-      type: HTMLAudioElement
+      type: Object
     }
   },
 
@@ -36,11 +38,14 @@ export default {
       currentTime: 0,
       loop: false,
       volume: 1,
-      paused: false
+      paused: false,
+      audio: null
     }
   },
 
-  mounted () {
+  async mounted () {
+    this.audio = new Audio(path.join('static', this.audioInfo.file))
+
     this.audio.currentTime = this.currentTime
     this.audio.loop = this.loop
     this.audio.volume = this.volume

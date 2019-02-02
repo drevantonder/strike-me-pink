@@ -91,7 +91,7 @@ export default {
     save () {
       this.add({
         name: this.name,
-        filePath: this.file.dir
+        file: this.file
       })
 
       this.$emit('update:filePath', undefined)
