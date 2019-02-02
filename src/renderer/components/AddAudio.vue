@@ -1,5 +1,7 @@
 <template>
-  <b-modal :active.sync="show" :width="640" v-if="show">
+  <div>
+    <b-button @click="openModal">Add</b-button>
+    <b-modal :active.sync="show" :width="640" v-if="show">
     <template slot="header">
       <p class="modal-card-title">Add Audio</p>
     </template> 
@@ -28,9 +30,10 @@
     </div>
     <template slot="footer">
       <button class="button is-success" @click="save">Save</button>
-      <button class="button">Cancel</button>
+      <button class="button" @click="close">Cancel</button>
     </template>  
   </b-modal>
+  </div>  
 </template>
 
 <script>
@@ -50,17 +53,25 @@ export default {
 
   data () {
     return {
-      customName: undefined
+      customName: undefined,
+      active: false
     }
   },
 
   computed: {
     show () {
-      return this.filePath !== undefined
+      return this.filePath !== undefined || this.active
     },
 
     file () {
-      return path.parse(this.filePath)
+      if (this.filePath) {
+        return path.parse(this.filePath)
+      }
+      return {
+        name: undefined,
+        dir: undefined,
+        base: 'None Selected'
+      }
     },
 
     name: {
@@ -88,13 +99,22 @@ export default {
       }
     },
 
+    openModal () {
+      this.active = true
+    },
+
     save () {
       this.add({
         name: this.name,
         file: this.file
       })
 
+      this.close()
+    },
+
+    close () {
       this.$emit('update:filePath', undefined)
+      this.active = false
     },
 
     ...mapActions(['add'])

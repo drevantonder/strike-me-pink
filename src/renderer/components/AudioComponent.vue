@@ -1,23 +1,10 @@
 <template>
-  <b-columns vcentered>
-    <b-column narrow>
-      <b-button primary rounded inverted @click="togglePlay">
-        <i class="fal" :class="playIcon"></i>
-      </b-button>
-      <b-button primary rounded inverted @click="toggleLoop">
-        <i class="fa-repeat" :class="loopIcon"></i>
-      </b-button>
-    </b-column>
-    <b-column>
-      <b-progress primary small :value="currentTime" :max="duration" ref="currentTime" @click="changeCurrentTime"></b-progress>
-    </b-column>
-    <b-column v-show="showVolume" @mouseenter="showVolume = true" @mouseleave="showVolume = false">
-      <b-progress primary small :value="volume" :max="1" ref="volume" @click="changeVolume"></b-progress>
-    </b-column>
-    <b-column narrow @mouseenter="showVolume = true" @mouseleave="showVolume = false">
-      <b-button primary rounded inverted ><i class="fal fa-volume"></i></b-button>
-    </b-column>
-  </b-columns>
+  <b-button @click="togglePlay" large fullwidth class="my-audio">
+    <span class="my-text">
+      <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
+    </span>
+    <span class="my-progress" :style="{ 'width': progress }" />
+  </b-button>
 </template>
 
 <script>
@@ -38,12 +25,12 @@ export default {
       currentTime: 0,
       loop: false,
       volume: 1,
-      paused: false,
+      paused: true,
       audio: null
     }
   },
 
-  async mounted () {
+  mounted () {
     this.audio = new Audio(path.join('static', this.audioInfo.file))
 
     this.audio.currentTime = this.currentTime
@@ -71,6 +58,7 @@ export default {
         this.audio.play()
       } else {
         this.audio.pause()
+        this.audio.currentTime = 0
       }
     },
 
@@ -99,12 +87,50 @@ export default {
 
   computed: {
     playIcon () {
-      return 'fa-' + (this.paused ? 'play' : 'pause')
+      return this.paused ? '' : 'fas fa-spin'
     },
 
     loopIcon () {
       return this.loop ? 'far' : 'fal'
+    },
+
+    progress () {
+      return (this.currentTime / this.duration * 100).toString() + '%'
     }
+  },
+
+  filters: {
+    SecToTime (t) {
+      function padZero (v) {
+        return (v < 10) ? '0' + v : v
+      }
+
+      return padZero(parseInt((t / (60)) % 60)) + ':' + padZero(parseInt((t) % 60))
+    }
+  },
+
+  destroyed () {
+    this.audio.pause()
   }
 }
 </script>
+
+<style lang="scss">
+.my-audio {
+  position: relative;
+  .my-text {
+    z-index: 1;
+    background-color: transparent;
+  }
+
+  .my-progress {
+    position: absolute;
+    display: block;
+    min-height: 100%;
+    border-radius: inherit;
+    background-color: rgb(43,194,83);
+    overflow: hidden;
+    left: 0;
+  }
+}
+</style>

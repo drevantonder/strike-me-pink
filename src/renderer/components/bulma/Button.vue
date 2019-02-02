@@ -19,6 +19,7 @@ export default {
     'inverted',
     'active',
     'focused',
+    'fullwidth',
     ...COLORS,
     ...SIZES
   )]

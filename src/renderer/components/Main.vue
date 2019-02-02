@@ -1,8 +1,20 @@
 <template>
   <drop @drop="handleDrop" class="drop">
     <add-audio :file-path.sync="filePath" />
+    <b-columns style="width: 100%">
+      <b-column >
+        <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
+      </b-column>
+      <b-column />
+      <b-column />
+      <b-column />
+      <b-column />
+      <b-column />
+      <b-column />
+      <b-column />
+    </b-columns>
     
-    <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
+    
   </drop>
 </template>
 
@@ -21,6 +33,7 @@ export default {
   data () {
     return {
       filePath: undefined
+
     }
   },
 
