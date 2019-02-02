@@ -26,7 +26,7 @@ export default {
 
   computed: {
     ...mapState({
-      audio: state => state.audio.audio
+      audio: state => state.audio
     })
   },
 

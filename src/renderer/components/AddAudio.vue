@@ -97,9 +97,7 @@ export default {
       this.$emit('update:filePath', undefined)
     },
 
-    ...mapActions({
-      add: 'audio/add'
-    })
+    ...mapActions(['add'])
   }
 }
 </script>
