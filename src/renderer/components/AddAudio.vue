@@ -27,13 +27,15 @@
       </label>
     </div>
     <template slot="footer">
-      <button class="button is-success">Save</button>
+      <button class="button is-success" @click="save">Save</button>
       <button class="button">Cancel</button>
     </template>  
   </b-modal>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 const { dialog } = require('electron').remote
 const path = require('path')
 
@@ -84,7 +86,20 @@ export default {
       if (Array.isArray(filePaths)) {
         this.$emit('update:filePath', filePaths[0])
       }
-    }
+    },
+
+    save () {
+      this.add({
+        name: this.name,
+        filePath: this.file.dir
+      })
+
+      this.$emit('update:filePath', undefined)
+    },
+
+    ...mapActions({
+      add: 'audio/add'
+    })
   }
 }
 </script>
