@@ -20,6 +20,7 @@ export default {
     'active',
     'focused',
     'fullwidth',
+    'static',
     ...COLORS,
     ...SIZES
   )]

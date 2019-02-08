@@ -1,33 +1,14 @@
 <template>
   <div>
-    <b-button @click="openModal">Add</b-button>
-    <b-modal :active.sync="show" :width="640" v-if="show">
+    <GlobalEvents @drop.prevent="fileDrop"/>
+    <b-button @click="open">Add</b-button>
+    <b-modal :active.sync="active" :width="640" v-if="active">
     <template slot="header">
       <p class="modal-card-title">Add Audio</p>
-    </template> 
+    </template>
 
-    <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-          <input class="input" type="text" placeholder="Name" v-model="name">
-      </div>
-    </div>
-    
-    <div class="file">
-      <label class="file-label">
-        <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label" @click="showOpenDialog(file.dir)">
-            Choose a file…
-          </span>
-        </span>
-        <span class="file-name">
-          {{ file.base }}
-        </span>
-      </label>
-    </div>
+    <audio-form v-bind.sync="audio" />
+
     <template slot="footer">
       <button class="button is-success" @click="save">Save</button>
       <button class="button" @click="close">Cancel</button>
@@ -37,84 +18,52 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import AudioForm from './forms/AudioForm'
 
-const { dialog } = require('electron').remote
-const path = require('path')
+import { mapActions } from 'vuex'
+import path from 'path'
 
 export default {
-  props: {
-    filePath: {
-      required: false,
-      type: [String, undefined],
-      default: undefined
-    }
+  components: {
+    AudioForm
   },
 
   data () {
     return {
-      customName: undefined,
+      audio: {
+        name: undefined,
+        file: undefined
+      },
       active: false
     }
   },
 
-  computed: {
-    show () {
-      return this.filePath !== undefined || this.active
-    },
-
-    file () {
-      if (this.filePath) {
-        return path.parse(this.filePath)
-      }
-      return {
-        name: undefined,
-        dir: undefined,
-        base: 'None Selected'
-      }
-    },
-
-    name: {
-      get () {
-        return this.customName || this.file.name
-      },
-
-      set (value) {
-        this.customName = value
+  watch: {
+    'audio.file': function () {
+      if (this.audio.name === undefined && this.audio.file !== undefined) {
+        this.audio.name = this.audio.file.name
       }
     }
   },
 
   methods: {
-    showOpenDialog (path) {
-      dialog.showOpenDialog({
-        defaultPath: path,
-        filters: [ { name: 'Audio Files', extensions: ['mp3'] } ]
-      }, this.openFile)
-    },
-
-    openFile (filePaths) {
-      if (Array.isArray(filePaths)) {
-        this.$emit('update:filePath', filePaths[0])
-      }
-    },
-
-    openModal () {
+    open () {
       this.active = true
     },
 
     save () {
-      this.add({
-        name: this.name,
-        file: this.file
-      })
+      this.add(this.audio)
 
       this.close()
     },
 
     close () {
-      this.$emit('update:filePath', undefined)
       this.active = false
+    },
+
+    fileDrop (event) {
+      this.open()
+      this.audio.file = path.parse(event.dataTransfer.files[0].path)
     },
 
     ...mapActions(['add'])

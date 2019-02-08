@@ -9,12 +9,17 @@ import { createPersistedState, createSharedMutations } from 'vuex-electron'
 Vue.use(Vuex)
 
 const state = {
-  audio: []
+  audio: [],
+  edit: false
 }
 
 const mutations = {
   add (state, audio) {
     state.audio.push(audio)
+  },
+
+  setEdit (state, edit) {
+    state.edit = edit
   }
 }
 
@@ -30,6 +35,10 @@ const actions = {
         file: fileName
       })
     })
+  },
+
+  toggleEdit (context) {
+    context.commit('setEdit', !context.state.edit)
   }
 }
 

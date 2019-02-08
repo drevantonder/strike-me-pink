@@ -1,14 +1,18 @@
 <template>
-  <b-button @click="togglePlay" large fullwidth class="my-audio">
+  <b-button @click="togglePlay" large fullwidth :static="edit" class="my-audio">
     <span class="my-text">
       <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
     </span>
     <span class="my-progress" :style="{ 'width': progress }" />
+    <span v-if="edit" style="pointer-events: auto;">
+      <b-button>Edit</b-button>
+    </span>
   </b-button>
 </template>
 
 <script>
 import path from 'path'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -54,6 +58,9 @@ export default {
 
   methods: {
     togglePlay () {
+      if (this.edit) {
+        return
+      }
       if (this.paused) {
         this.audio.play()
       } else {
@@ -96,7 +103,11 @@ export default {
 
     progress () {
       return (this.currentTime / this.duration * 100).toString() + '%'
-    }
+    },
+
+    ...mapState({
+      edit: state => state.edit
+    })
   },
 
   filters: {
@@ -118,6 +129,10 @@ export default {
 <style lang="scss">
 .my-audio {
   position: relative;
+  max-width: 100%;
+
+  margin: 20px;
+
   .my-text {
     z-index: 1;
     background-color: transparent;

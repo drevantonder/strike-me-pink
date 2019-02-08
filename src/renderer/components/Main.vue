@@ -1,17 +1,11 @@
 <template>
-  <drop @drop="handleDrop" class="drop">
+  <drop class="drop">
     <add-audio :file-path.sync="filePath" />
+    <b-button @click="toggleEdit">Edit</b-button>
     <b-columns style="width: 100%">
-      <b-column >
+      <b-column>
         <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
       </b-column>
-      <b-column />
-      <b-column />
-      <b-column />
-      <b-column />
-      <b-column />
-      <b-column />
-      <b-column />
     </b-columns>
     
     
@@ -22,7 +16,7 @@
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
 
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -33,7 +27,6 @@ export default {
   data () {
     return {
       filePath: undefined
-
     }
   },
 
@@ -44,10 +37,7 @@ export default {
   },
 
   methods: {
-    handleDrop (data, event) {
-      event.preventDefault()
-      this.filePath = event.dataTransfer.files[0].path
-    }
+    ...mapActions(['toggleEdit'])
   }
 }
 </script>
