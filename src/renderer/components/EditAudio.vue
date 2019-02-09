@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <GlobalEvents @drop.prevent="fileDrop"/>
-    <b-button @click="open">Add</b-button>
+  <span style="pointer-events: auto;">
+    <b-button @click="open">Edit</b-button>
+
     <b-modal :active.sync="active" :width="640" v-if="active">
       <template slot="header">
-        <p class="modal-card-title">Add Audio</p>
+        <p class="modal-card-title">Edit Audio</p>
       </template>
 
       <audio-form v-bind.sync="audio" />
@@ -14,21 +14,16 @@
         <button class="button" @click="close">Cancel</button>
       </template>  
     </b-modal>
-  </div>  
+  </span>
 </template>
 
 <script>
-import AudioForm from './forms/AudioForm'
+import AudioForm from './forms/AudioForm.vue'
 
-import { mapActions } from 'vuex'
-import path from 'path'
+import { mapState, mapActions } from 'vuex'
 
 function data () {
   return {
-    audio: {
-      name: undefined,
-      file: undefined
-    },
     active: false
   }
 }
@@ -38,16 +33,23 @@ export default {
     AudioForm
   },
 
+  props: {
+    audioId: {
+      required: true,
+      type: String
+    }
+  },
+
   data () {
     return data()
   },
 
-  watch: {
-    'audio.file': function () {
-      if (this.audio.name === undefined && this.audio.file !== undefined) {
-        this.audio.name = path.basename(this.audio.file, path.extname(this.audio.file))
+  computed: {
+    ...mapState({
+      audio: function (state) {
+        return state.audio.find(a => a.id === this.audioId)
       }
-    }
+    })
   },
 
   methods: {
@@ -56,27 +58,22 @@ export default {
     },
 
     save () {
-      this.add(this.audio)
+      this.update(this.audio)
 
       this.close()
     },
 
     close () {
       this.active = false
-
       this.reset()
-    },
-
-    fileDrop (event) {
-      this.open()
-      this.audio.file = event.dataTransfer.files[0].path
     },
 
     reset () {
       Object.assign(this.$data, data())
     },
 
-    ...mapActions(['add'])
+    ...mapActions(['update'])
   }
 }
 </script>
+

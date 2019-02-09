@@ -33,13 +33,13 @@ export default {
     },
 
     fileName () {
-      return this.file ? this.file.base : 'None selected 😢'
+      return this.file ? path.basename(this.file) : 'None selected 😢'
     }
   },
 
   methods: {
     openFile (filePaths) {
-      this.$emit('update:file', path.parse(filePaths[0]))
+      this.$emit('update:file', filePaths[0])
     }
   }
 }

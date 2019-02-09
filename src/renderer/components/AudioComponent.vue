@@ -4,9 +4,9 @@
       <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
     </span>
     <span class="my-progress" :style="{ 'width': progress }" />
-    <span v-if="edit" style="pointer-events: auto;">
-      <b-button>Edit</b-button>
-    </span>
+    
+    <edit-audio v-if="edit" :audioId="this.audioInfo.id" />
+    
   </b-button>
 </template>
 
@@ -14,12 +14,18 @@
 import path from 'path'
 import { mapState } from 'vuex'
 
+import EditAudio from './EditAudio.vue'
+
 export default {
   props: {
     audioInfo: {
       required: true,
       type: Object
     }
+  },
+
+  components: {
+    EditAudio
   },
 
   data () {
@@ -30,7 +36,9 @@ export default {
       loop: false,
       volume: 1,
       paused: true,
-      audio: null
+      audio: null,
+
+      editModalActive: false
     }
   },
 
@@ -89,6 +97,10 @@ export default {
       const element = this.$refs.currentTime.$el
       this.currentTime = ((e.pageX - element.offsetLeft) / element.offsetWidth) * this.duration
       this.audio.currentTime = this.currentTime
+    },
+
+    openEditModal (e) {
+      this.editModalActive = true
     }
   },
 
