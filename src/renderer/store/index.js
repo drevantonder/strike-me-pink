@@ -26,6 +26,10 @@ const mutations = {
     state.audio[index] = audio
   },
 
+  remove (state, audio) {
+    state.audio = state.audio.filter(a => a.id !== audio.id)
+  },
+
   setEdit (state, edit) {
     state.edit = edit
   }
@@ -46,7 +50,11 @@ const actions = {
   },
 
   update (context, audio) {
-    this.commit('update', audio)
+    context.commit('update', audio)
+  },
+
+  remove (context, audio) {
+    context.commit('remove', audio)
   },
 
   toggleEdit (context) {

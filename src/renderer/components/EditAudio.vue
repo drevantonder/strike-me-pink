@@ -1,6 +1,7 @@
 <template>
   <span style="pointer-events: auto;">
     <b-button @click="open">Edit</b-button>
+    <b-button @click="remove(audio)">Delete</b-button>
 
     <b-modal :active.sync="active" :width="640" v-if="active">
       <template slot="header">
@@ -72,7 +73,7 @@ export default {
       Object.assign(this.$data, data())
     },
 
-    ...mapActions(['update'])
+    ...mapActions(['update', 'remove'])
   }
 }
 </script>
