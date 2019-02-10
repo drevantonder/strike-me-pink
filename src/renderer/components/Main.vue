@@ -1,7 +1,7 @@
 <template>
   <drop class="drop">
     <add-audio :file-path.sync="filePath" />
-    <b-button @click="toggleEdit">Edit</b-button>
+    <b-button @click="toggleEdit" :success="edit">Edit</b-button>
     <b-columns style="width: 100%">
       <b-column>
         <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
@@ -32,7 +32,8 @@ export default {
 
   computed: {
     ...mapState({
-      audio: state => state.audio
+      audio: state => state.audio,
+      edit: state => state.edit
     })
   },
 

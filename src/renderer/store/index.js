@@ -2,12 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import uuidv4 from 'uuid/v4'
-import path from 'path'
-import fs from 'fs'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
-
-const SAVE_PATH = __static
 
 Vue.use(Vuex)
 
@@ -37,15 +33,10 @@ const mutations = {
 
 const actions = {
   add (context, { name, file }) {
-    var newFile = name.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + path.extname(file)
-
-    fs.copyFile(file, path.join(SAVE_PATH, newFile), (err) => {
-      if (err) throw err
-      context.commit('add', {
-        id: uuidv4(),
-        name,
-        file: newFile
-      })
+    context.commit('add', {
+      id: uuidv4(),
+      name,
+      file: file
     })
   },
 

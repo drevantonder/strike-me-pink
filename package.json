@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "bulma": "^0.7.2",
+    "dataurl": "0.1.0",
     "nedb": "1.8.0",
     "uuid": "3.3.2",
     "vue": "^2.5.16",
@@ -98,13 +99,16 @@
     "webpack-merge": "^4.1.3"
   },
   "build": {
-    "productName": "sound-desk",
+    "productName": "strike-me-pink",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"
     },
     "files": [
       "dist/electron/**/*"
+    ],
+    "extraResources": [
+      "static"
     ],
     "dmg": {
       "contents": [

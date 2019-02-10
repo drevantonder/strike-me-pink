@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="is-size-6">
     <b-field>
       <b-label>Name</b-label>
       <b-control>
