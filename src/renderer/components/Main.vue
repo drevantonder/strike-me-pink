@@ -1,5 +1,6 @@
 <template>
   <drop class="drop">
+    <window-controls />
     <add-audio :file-path.sync="filePath" />
     <b-button @click="toggleEdit" :success="edit">Edit</b-button>
     <b-columns style="width: 100%">
@@ -15,13 +16,15 @@
 <script>
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
+import WindowControls from './WindowControls'
 
 import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
     AudioComponent,
-    AddAudio
+    AddAudio,
+    WindowControls
   },
 
   data () {

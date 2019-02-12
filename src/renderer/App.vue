@@ -18,7 +18,6 @@ html {
   overflow: hidden;
   min-height:100%;
   position:relative;
-  margin-top: 12px;
 }
 
 body {

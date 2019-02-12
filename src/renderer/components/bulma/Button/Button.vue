@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { COLORS, SIZES } from './constants'
-import { isModifier } from './mixins'
+import { COLORS, SIZES } from './../constants'
+import { isModifier } from './../mixins'
 
 export default {
   mixins: [isModifier(
