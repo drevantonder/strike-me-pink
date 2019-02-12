@@ -27,7 +27,7 @@ requireComponent.keys().forEach(filePath => {
 
   // Register component globally
   Vue.component(
-    'b-' + componentName.toLowerCase(),
+    'B' + componentName,
     // Look for the component options on `.default`, which will
     // exist if the component was exported with `export default`,
     // otherwise fall back to module's root.
