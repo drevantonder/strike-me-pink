@@ -76,7 +76,9 @@ export default {
       Object.assign(this.$data, data())
     },
 
-    ...mapActions(['add'])
+    ...mapActions({
+      add: 'audio/add'
+    })
   }
 }
 </script>

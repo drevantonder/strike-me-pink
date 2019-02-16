@@ -1,5 +1,5 @@
 <template>
-  <b-button @click="togglePlay" large fullwidth :static="edit" class="my-audio">
+  <b-button @click="togglePlay" large :static="edit" class="my-audio">
     <span class="my-text">
       <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
     </span>
@@ -144,6 +144,7 @@ export default {
 
 <style lang="scss">
 .my-audio {
+  display: flex;
   position: relative;
   max-width: 100%;
 

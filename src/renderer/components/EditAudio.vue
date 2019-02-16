@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapState({
       audio: function (state) {
-        return state.audio.find(a => a.id === this.audioId)
+        return state.audio.audio.find(a => a.id === this.audioId)
       }
     })
   },
@@ -73,7 +73,10 @@ export default {
       Object.assign(this.$data, data())
     },
 
-    ...mapActions(['update', 'remove'])
+    ...mapActions({
+      update: 'audio/update',
+      remove: 'audio/remove'
+    })
   }
 }
 </script>
