@@ -18,8 +18,8 @@ const mutations = {
 }
 
 const actions = {
-  toggleEdit (context) {
-    context.commit('setEdit', !context.state.edit)
+  setEdit (context, edit) {
+    context.commit('setEdit', edit)
   }
 }
 

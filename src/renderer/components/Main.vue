@@ -1,10 +1,13 @@
 <template>
   <drop class="drop">
+    <div class="field">
+      <input id="switchRoundedOutlinedDefault" type="checkbox" name="switchRoundedOutlinedDefault" class="switch is-rounded is-outlined" @change="setEdit($event.target.checked)" :checked="edit">
+      <label for="switchRoundedOutlinedDefault">Edit Mode</label>
+    </div>
     <window-controls />
     <div>
       <div>
         <add-audio :file-path.sync="filePath" />
-        <b-button @click="toggleEdit" :success="edit">Edit</b-button>
       </div>
     </div>
     <div style="overflow-x: hidden; overflow-y: auto;">
@@ -51,7 +54,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['toggleEdit'])
+    ...mapActions(['setEdit'])
   }
 }
 </script>

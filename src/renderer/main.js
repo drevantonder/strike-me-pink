@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import 'bulma/bulma.sass'
+import './sass/main.sass'
 import '@fortawesome/fontawesome-pro/css/all.css'
 
 import App from './App'
