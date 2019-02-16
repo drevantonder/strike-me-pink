@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "bulma": "^0.7.2",
+    "bulma-switch": "2.0.0",
     "dataurl": "0.1.0",
     "nedb": "1.8.0",
     "uuid": "3.3.2",
