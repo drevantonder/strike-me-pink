@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <portal-target name="root" />
     <router-view />
   </div>
 </template>

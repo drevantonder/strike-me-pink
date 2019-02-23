@@ -10,7 +10,9 @@ import './components/bulma'
 
 import VueDragDrop from 'vue-drag-drop'
 import GlobalEvents from 'vue-global-events'
+import PortalVue from 'portal-vue'
 
+Vue.use(PortalVue)
 Vue.use(VueDragDrop)
 Vue.component('GlobalEvents', GlobalEvents)
 

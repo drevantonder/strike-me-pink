@@ -146,13 +146,14 @@ export default {
 .my-audio {
   display: flex;
   position: relative;
-  max-width: 100%;
-
-  margin: 20px;
+  margin: 16px 0;
 
   .my-text {
     z-index: 1;
     background-color: transparent;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   .my-progress {

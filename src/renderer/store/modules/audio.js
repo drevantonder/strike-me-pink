@@ -20,11 +20,10 @@ const mutations = {
 }
 
 const actions = {
-  add (context, { name, file }) {
+  add (context, data) {
     context.commit('add', {
       id: uuidv4(),
-      name,
-      file: file
+      ...data
     })
   },
 

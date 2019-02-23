@@ -4,7 +4,11 @@ export const COLORS = [
   'info',
   'success',
   'warning',
-  'danger'
+  'danger',
+  'black',
+  'dark',
+  'light',
+  'white'
 ]
 
 export const SIZES = [

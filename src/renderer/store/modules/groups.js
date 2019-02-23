@@ -1,7 +1,10 @@
 import uuidv4 from 'uuid/v4'
 
 const state = {
-  groups: []
+  groups: [{
+    id: 'aaa',
+    name: 'Test'
+  }]
 }
 
 const mutations = {
