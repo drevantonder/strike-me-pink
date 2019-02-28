@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <portal-target name="root" />
-    <router-view />
+    <main-component />
   </div>
 </template>
 
 <script>
+import Main from './components/Main.vue'
 
 export default {
-  name: 'app'
+  components: {
+    MainComponent: Main
+  }
 }
 </script>
 

@@ -3,7 +3,13 @@ import uuidv4 from 'uuid/v4'
 const state = {
   groups: [{
     id: 'aaa',
-    name: 'Test'
+    name: 'Test',
+    grid: {
+      'x': 0,
+      'y': 0,
+      'w': 1,
+      'h': 1
+    }
   }]
 }
 
