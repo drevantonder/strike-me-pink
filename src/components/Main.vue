@@ -60,20 +60,16 @@ export default {
 
   computed: {
     ...mapState({
-      groups: state => state.groups.groups,
+      groups: state => state.groups.items,
       edit: state => state.edit
     })
   },
 
   methods: {
-    ...mapActions(['setEdit']),
-    ...mapActions({
-      updateGroup: 'groups/update'
-    }),
+    ...mapActions(['setEdit', 'updateGroup']),
 
     onLayoutUpdated (layout) {
       layout.forEach(function (grid) {
-        console.log({ ...this.groups.find(g => g.id === grid.i), grid })
         this.updateGroup({ ...this.groups.find(g => g.id === grid.i), grid })
       }.bind(this))
     }

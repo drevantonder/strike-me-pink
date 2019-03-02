@@ -11,7 +11,7 @@
 <script>
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -28,28 +28,10 @@ export default {
 
   computed: {
     ...mapState({
-      group (state) { return state.groups.groups.find(g => g.id === this.id) },
-      audio (state) { return state.audio.audio.filter(a => a.groupId === this.group.id) },
+      group (state) { return state.groups.items.find(g => g.id === this.id) },
+      audio (state) { return state.audio.items.filter(a => a.groupId === this.group.id) },
       edit: state => state.edit
     })
-  },
-
-  methods: {
-    ...mapActions({
-      update: 'groups/update'
-    }),
-
-    onMoved (i, newX, newY) {
-      console.log(i, newX, newY)
-    },
-
-    onResized (i, newH, newW) {
-      console.log(i, newH, newW)
-    },
-
-    onMove (i, newX, newY) {
-      console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
-    }
   }
 }
 </script>

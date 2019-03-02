@@ -65,7 +65,7 @@ export default {
     },
 
     save () {
-      this.add({ ...this.audio, groupId: this.groupId })
+      this.addAudio({ ...this.audio, groupId: this.groupId })
 
       this.close()
     },
@@ -86,7 +86,7 @@ export default {
     },
 
     ...mapActions({
-      add: 'audio/add'
+      addAudio: 'addAudio'
     })
   }
 }

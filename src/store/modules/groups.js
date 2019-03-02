@@ -1,7 +1,7 @@
 import uuidv4 from 'uuid/v4'
 
 const state = {
-  groups: [{
+  items: [{
     id: 'aaa',
     name: 'Test',
     grid: {
@@ -25,32 +25,32 @@ const state = {
 
 const mutations = {
   add (state, group) {
-    state.groups.push(group)
+    state.items.push(group)
   },
 
   update (state, group) {
-    const index = state.groups.findIndex(a => a.id === group.id)
-    state.groups[index] = group
+    const index = state.items.findIndex(a => a.id === group.id)
+    state.items[index] = group
   },
 
   remove (state, group) {
-    state.groups = state.groups.filter(a => a.id !== group.id)
+    state.items = state.items.filter(a => a.id !== group.id)
   }
 }
 
 const actions = {
-  add (context, { name }) {
+  addGroup (context, { name }) {
     context.commit('add', {
       id: uuidv4(),
       name
     })
   },
 
-  update (context, group) {
+  updateGroup (context, group) {
     context.commit('update', group)
   },
 
-  remove (context, group) {
+  removeGroup (context, group) {
     context.commit('remove', group)
   }
 }
@@ -58,6 +58,5 @@ const actions = {
 export default {
   state,
   mutations,
-  actions,
-  namespaced: true
+  actions
 }

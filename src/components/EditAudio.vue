@@ -1,7 +1,7 @@
 <template>
   <span style="pointer-events: auto;">
     <b-button @click="open">Edit</b-button>
-    <b-button @click="remove(audio)">Delete</b-button>
+    <b-button @click="removeAudio(audio)">Delete</b-button>
 
     <b-modal :active.sync="active" :width="640" v-if="active">
       <template slot="header">
@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapState({
       audio: function (state) {
-        return state.audio.audio.find(a => a.id === this.audioId)
+        return state.audio.items.find(a => a.id === this.audioId)
       }
     })
   },
@@ -59,7 +59,7 @@ export default {
     },
 
     save () {
-      this.update(this.audio)
+      this.updateAudio(this.audio)
 
       this.close()
     },
@@ -74,8 +74,8 @@ export default {
     },
 
     ...mapActions({
-      update: 'audio/update',
-      remove: 'audio/remove'
+      updateAudio: 'updateAudio',
+      removeAudio: 'removeAudio'
     })
   }
 }

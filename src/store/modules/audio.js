@@ -1,37 +1,37 @@
 import uuidv4 from 'uuid/v4'
 
 const state = {
-  audio: []
+  items: []
 }
 
 const mutations = {
   add (state, audio) {
-    state.audio.push(audio)
+    state.items.push(audio)
   },
 
   update (state, audio) {
-    const index = state.audio.findIndex(a => a.id === audio.id)
-    state.audio[index] = audio
+    const index = state.items.findIndex(a => a.id === audio.id)
+    state.items[index] = audio
   },
 
   remove (state, audio) {
-    state.audio = state.audio.filter(a => a.id !== audio.id)
+    state.items = state.items.filter(a => a.id !== audio.id)
   }
 }
 
 const actions = {
-  add (context, data) {
+  addAudio (context, data) {
     context.commit('add', {
       id: uuidv4(),
       ...data
     })
   },
 
-  update (context, audio) {
+  updateAudio (context, audio) {
     context.commit('update', audio)
   },
 
-  remove (context, audio) {
+  removeAudio (context, audio) {
     context.commit('remove', audio)
   }
 }
@@ -39,6 +39,5 @@ const actions = {
 export default {
   state,
   mutations,
-  actions,
-  namespaced: true
+  actions
 }
