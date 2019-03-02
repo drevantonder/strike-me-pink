@@ -1,24 +1,14 @@
 <template>
-  <grid-item
-    :x="group.grid.x"
-    :y="group.grid.y"
-    :w="group.grid.w"
-    :h="group.grid.h"
-    :i="group.id"
-    @moved="onMoved"
-    @resized="onResized">
-    <div class="group box">
-      <b-tag primary medium class="name">{{ group.name }}</b-tag>
-      <div style="display: inline-block; padding: 8px;">
-        <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
-        <add-audio :groupId="group.id" v-if="edit"/>
-      </div>
+  <div class="group box">
+    <b-tag primary medium class="name">{{ group.name }}</b-tag>
+    <div style="display: inline-block; padding: 8px;">
+      <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
+      <add-audio :groupId="group.id" v-if="edit"/>
     </div>
-  </grid-item>
+  </div>
 </template>
 
 <script>
-import VueGridLayout from 'vue-grid-layout'
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
 import { mapState, mapActions } from 'vuex'
@@ -26,8 +16,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   components: {
     AddAudio,
-    AudioComponent,
-    GridItem: VueGridLayout.GridItem
+    AudioComponent
   },
 
   props: {
@@ -52,11 +41,14 @@ export default {
 
     onMoved (i, newX, newY) {
       console.log(i, newX, newY)
-      this.update(Object.assign(this.group, { grid: { x: newX, y: newY } }))
     },
 
     onResized (i, newH, newW) {
       console.log(i, newH, newW)
+    },
+
+    onMove (i, newX, newY) {
+      console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
     }
   }
 }

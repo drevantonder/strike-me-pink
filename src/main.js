@@ -17,6 +17,11 @@ Vue.component('GlobalEvents', GlobalEvents)
 
 Vue.config.productionTip = false
 
+// https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/commonIssues.html#exceptions-in-async-functions-not-getting-logged-to-console
+process.on('unhandledRejection', error => {
+  console.error(error)
+})
+
 /* eslint-disable no-new */
 new Vue({
   components: { App },

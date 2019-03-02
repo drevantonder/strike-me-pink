@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 import modules from './modules'
 
+import { createPersistedState } from 'vuex-electron'
+
 Vue.use(Vuex)
 
 const state = {
@@ -26,5 +28,6 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules,
+  plugins: [createPersistedState()],
   strict: process.env.NODE_ENV !== 'production'
 })

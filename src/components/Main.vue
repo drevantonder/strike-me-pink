@@ -7,7 +7,7 @@
     <window-controls />
     <div style="overflow-x: hidden; overflow-y: auto; flex: 1;">
       <grid-layout
-        :layout="layout"
+        :layout.sync="layout"
         :col-num="6"
         :row-height="150"
         :is-draggable="edit"
@@ -16,8 +16,18 @@
         :vertical-compact="true"
         :margin="[10, 10]"
         :use-css-transforms="false"
+        @layout-updated="onLayoutUpdated"
       >
-        <group-component v-for="group in groups" :key="group.id" v-bind="group" />
+        <grid-item
+          v-for="item in layout"
+          :key="item.i"
+          :x="item.x"
+          :y="item.y"
+          :w="item.w"
+          :h="item.h"
+          :i="item.i">
+          <group-component :id="item.i" />
+        </grid-item>
       </grid-layout>
     </div>
     <!-- <span style="position: absolute; top: 0; left: 0; width: 20px; height: 99vh; background-color: yellow;" /> -->
@@ -38,19 +48,35 @@ export default {
     GridLayout: VueGridLayout.GridLayout
   },
 
+  data () {
+    return {
+      layout: []
+    }
+  },
+
+  created () {
+    this.layout = this.groups.map(g => Object.assign({}, { ...g.grid, i: g.id }))
+  },
+
   computed: {
     ...mapState({
       groups: state => state.groups.groups,
       edit: state => state.edit
-    }),
-
-    layout () {
-      return this.groups.map(g => Object.assign({}, g.grid))
-    }
+    })
   },
 
   methods: {
-    ...mapActions(['setEdit'])
+    ...mapActions(['setEdit']),
+    ...mapActions({
+      updateGroup: 'groups/update'
+    }),
+
+    onLayoutUpdated (layout) {
+      layout.forEach(function (grid) {
+        console.log({ ...this.groups.find(g => g.id === grid.i), grid })
+        this.updateGroup({ ...this.groups.find(g => g.id === grid.i), grid })
+      }.bind(this))
+    }
   }
 }
 </script>

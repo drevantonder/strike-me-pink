@@ -10,6 +10,16 @@ const state = {
       'w': 1,
       'h': 1
     }
+  },
+  {
+    id: 'aaB',
+    name: 'Test',
+    grid: {
+      'x': 1,
+      'y': 0,
+      'w': 1,
+      'h': 1
+    }
   }]
 }
 
@@ -19,7 +29,7 @@ const mutations = {
   },
 
   update (state, group) {
-    const index = state.group.findIndex(a => a.id === group.id)
+    const index = state.groups.findIndex(a => a.id === group.id)
     state.groups[index] = group
   },
 
