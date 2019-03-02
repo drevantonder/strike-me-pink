@@ -12,8 +12,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import fs from 'fs'
-import dataurl from 'dataurl'
 
 import EditAudio from './EditAudio.vue'
 
@@ -44,30 +42,25 @@ export default {
   },
 
   mounted () {
-    console.log(fs, dataurl)
-    fs.readFile(this.audioInfo.file, function (err, data) {
-      if (err) throw err
-      console.log(err, data)
-      this.audio = new Audio(dataurl.convert({ data, mimetype: 'audio/mp3' }))
+    this.audio = new Audio(this.audioInfo.file)
 
-      this.audio.currentTime = this.currentTime
-      this.audio.loop = this.loop
-      this.audio.volume = this.volume
+    this.audio.currentTime = this.currentTime
+    this.audio.loop = this.loop
+    this.audio.volume = this.volume
 
-      if (this.paused) {
-        this.audio.pause()
-      } else {
-        this.audio.play()
-      }
+    if (this.paused) {
+      this.audio.pause()
+    } else {
+      this.audio.play()
+    }
 
-      this.duration = this.audio.duration
+    this.duration = this.audio.duration
 
-      var that = this
-      this.audio.addEventListener('play', () => { that.paused = false })
-      this.audio.addEventListener('pause', () => { that.paused = true })
-      this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
-      this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
-    }.bind(this))
+    var that = this
+    this.audio.addEventListener('play', () => { that.paused = false })
+    this.audio.addEventListener('pause', () => { that.paused = true })
+    this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
+    this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
   },
 
   methods: {

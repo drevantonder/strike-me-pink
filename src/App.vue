@@ -2,7 +2,6 @@
   <div id="app">
     <portal-target name="root" />
     <main-component />
-    test
   </div>
 </template>
 
