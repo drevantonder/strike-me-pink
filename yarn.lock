@@ -8557,6 +8557,10 @@ vue-loader@^15.6.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-slider-component@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/vue-slider-component/-/vue-slider-component-3.0.5.tgz#e5d8a2e9a5aee45fc0ce885facde165233d27c1a"
+
 vue-style-loader@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"

@@ -44,7 +44,6 @@ export default {
 
     this.audio.currentTime = this.currentTime
     this.audio.loop = this.loop
-    this.audio.volume = this.volume
 
     if (this.paused) {
       this.audio.pause()
@@ -84,12 +83,6 @@ export default {
       }
     },
 
-    changeVolume (e) {
-      const element = this.$refs.volume.$el
-      this.volume = (e.pageX - element.offsetLeft) / element.offsetWidth
-      this.audio.volume = this.volume
-    },
-
     changeCurrentTime (e) {
       const element = this.$refs.currentTime.$el
       this.currentTime = ((e.pageX - element.offsetLeft) / element.offsetWidth) * this.duration
@@ -98,6 +91,12 @@ export default {
 
     openEditModal (e) {
       this.editModalActive = true
+    }
+  },
+
+  watch: {
+    'audioInfo.volume' () {
+      this.audio.volume = this.audioInfo.volume / 100
     }
   },
 

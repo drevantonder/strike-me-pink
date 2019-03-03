@@ -23,7 +23,8 @@ function data () {
   return {
     audio: {
       name: undefined,
-      file: undefined
+      file: undefined,
+      volume: 100
     },
     active: false
   }

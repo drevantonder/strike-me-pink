@@ -23,6 +23,7 @@
     "vue-draggable": "2.0.0-beta.1",
     "vue-global-events": "1.1.2",
     "vue-grid-layout": "2.3.3",
+    "vue-slider-component": "3.0.5",
     "vuex": "^3.0.1",
     "vuex-electron": "1.0.3"
   },

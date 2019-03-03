@@ -17,8 +17,8 @@
 import AudioForm from './forms/AudioForm.vue'
 import AudioComponent from './AudioComponent.vue'
 import ObjectModal from './ObjectModal.vue'
-
 import { mapState, mapActions } from 'vuex'
+import { clone } from '../util'
 
 function data () {
   return {
@@ -47,7 +47,7 @@ export default {
   computed: {
     ...mapState({
       audio: function (state) {
-        return state.audio.items.find(a => a.id === this.audioId)
+        return clone(state.audio.items.find(a => a.id === this.audioId))
       }
     })
   },
