@@ -2,7 +2,9 @@
   <div class="group box">
     <b-tag primary medium class="name">{{ group.name }}</b-tag>
     <div style="display: inline-block; padding: 8px;">
-      <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" />
+      <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" :is-static="edit">
+        <edit-audio v-if="edit" :audioId="audioInfo.id" />
+      </audio-component>
       <add-audio :groupId="group.id" v-if="edit"/>
     </div>
   </div>
@@ -11,11 +13,13 @@
 <script>
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
+import EditAudio from './EditAudio.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     AddAudio,
+    EditAudio,
     AudioComponent
   },
 

@@ -24,34 +24,34 @@ const state = {
 }
 
 const mutations = {
-  add (state, group) {
+  addGroup (state, group) {
     state.items.push(group)
   },
 
-  update (state, group) {
+  updateGroup (state, group) {
     const index = state.items.findIndex(a => a.id === group.id)
     state.items[index] = group
   },
 
-  remove (state, group) {
+  removeGroup (state, group) {
     state.items = state.items.filter(a => a.id !== group.id)
   }
 }
 
 const actions = {
   addGroup (context, { name }) {
-    context.commit('add', {
+    context.commit('addGroup', {
       id: uuidv4(),
       name
     })
   },
 
   updateGroup (context, group) {
-    context.commit('update', group)
+    context.commit('updateGroup', group)
   },
 
   removeGroup (context, group) {
-    context.commit('remove', group)
+    context.commit('removeGroup', group)
   }
 }
 

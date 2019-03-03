@@ -5,34 +5,34 @@ const state = {
 }
 
 const mutations = {
-  add (state, audio) {
+  addAudio (state, audio) {
     state.items.push(audio)
   },
 
-  update (state, audio) {
+  updateAudio (state, audio) {
     const index = state.items.findIndex(a => a.id === audio.id)
     state.items[index] = audio
   },
 
-  remove (state, audio) {
+  removeAudio (state, audio) {
     state.items = state.items.filter(a => a.id !== audio.id)
   }
 }
 
 const actions = {
   addAudio (context, data) {
-    context.commit('add', {
+    context.commit('addAudio', {
       id: uuidv4(),
       ...data
     })
   },
 
   updateAudio (context, audio) {
-    context.commit('update', audio)
+    context.commit('updateAudio', audio)
   },
 
   removeAudio (context, audio) {
-    context.commit('remove', audio)
+    context.commit('removeAudio', audio)
   }
 }
 

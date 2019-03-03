@@ -10,6 +10,8 @@
 
         <audio-form v-bind.sync="audio" />
 
+        <audio-component :audio-info="audio" />
+
         <template slot="footer">
           <button class="button is-success" @click="save">Save</button>
           <button class="button" @click="close">Cancel</button>
@@ -21,7 +23,7 @@
 
 <script>
 import AudioForm from './forms/AudioForm'
-
+import AudioComponent from './AudioComponent.vue'
 import { mapActions } from 'vuex'
 import path from 'path'
 
@@ -37,7 +39,8 @@ function data () {
 
 export default {
   components: {
-    AudioForm
+    AudioForm,
+    AudioComponent
   },
 
   data () {

@@ -1,30 +1,28 @@
 <template>
-  <b-button @click="togglePlay" large :static="edit" class="my-audio">
+  <b-button @click="togglePlay" large :static="isStatic" class="my-audio">
     <span class="my-text">
       <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
     </span>
     <span class="my-progress" :style="{ 'width': progress }" />
 
-    <edit-audio v-if="edit" :audioId="this.audioInfo.id" />
+    <slot />
 
   </b-button>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-import EditAudio from './EditAudio.vue'
-
 export default {
   props: {
     audioInfo: {
       required: true,
       type: Object
-    }
-  },
+    },
 
-  components: {
-    EditAudio
+    isStatic: {
+      required: false,
+      type: Boolean,
+      default: () => false
+    }
   },
 
   data () {
@@ -114,11 +112,7 @@ export default {
 
     progress () {
       return (this.currentTime / this.duration * 100).toString() + '%'
-    },
-
-    ...mapState({
-      edit: state => state.edit
-    })
+    }
   },
 
   filters: {
