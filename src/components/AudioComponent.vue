@@ -63,7 +63,7 @@ export default {
 
   methods: {
     togglePlay () {
-      if (this.edit) {
+      if (this.isStatic) {
         return
       }
       if (this.paused) {

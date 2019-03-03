@@ -2,22 +2,13 @@
   <b-button large fullwidth @click="open">
     Add
     <GlobalEvents @drop.prevent="fileDrop"/>
-    <portal to="root">
-      <b-modal :active.sync="active" :width="640" v-if="active">
-        <template slot="header">
-          <p class="modal-card-title">Add Audio</p>
-        </template>
+    <object-modal :active.sync="active" title="Add Audio" @save="save" @close="close">
+      <audio-form v-bind.sync="audio" />
 
-        <audio-form v-bind.sync="audio" />
+      <hr />
 
-        <audio-component :audio-info="audio" />
-
-        <template slot="footer">
-          <button class="button is-success" @click="save">Save</button>
-          <button class="button" @click="close">Cancel</button>
-        </template>
-      </b-modal>
-    </portal>
+      <audio-component :audio-info="{...audio, name: 'Preview'}" />
+    </object-modal>
   </b-button>
 </template>
 
@@ -26,6 +17,7 @@ import AudioForm from './forms/AudioForm'
 import AudioComponent from './AudioComponent.vue'
 import { mapActions } from 'vuex'
 import path from 'path'
+import ObjectModal from './ObjectModal.vue'
 
 function data () {
   return {
@@ -40,7 +32,8 @@ function data () {
 export default {
   components: {
     AudioForm,
-    AudioComponent
+    AudioComponent,
+    ObjectModal
   },
 
   data () {

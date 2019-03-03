@@ -3,26 +3,20 @@
     <b-button @click="open">Edit</b-button>
     <b-button @click="removeAudio(audio)">Delete</b-button>
 
-    <b-modal :active.sync="active" :width="640" v-if="active">
-      <template slot="header">
-        <p class="modal-card-title">Edit Audio</p>
-      </template>
-
+    <object-modal :active.sync="active" title="Edit Audio" @save="save" @close="close">
       <audio-form v-bind.sync="audio" />
 
-      <audio-component :audio-info="audio" />
+      <hr />
 
-      <template slot="footer">
-        <button class="button is-success" @click="save">Save</button>
-        <button class="button" @click="close">Cancel</button>
-      </template>
-    </b-modal>
+      <audio-component :audio-info="{...audio, name: 'Preview'}" />
+    </object-modal>
   </span>
 </template>
 
 <script>
 import AudioForm from './forms/AudioForm.vue'
 import AudioComponent from './AudioComponent.vue'
+import ObjectModal from './ObjectModal.vue'
 
 import { mapState, mapActions } from 'vuex'
 
@@ -35,7 +29,8 @@ function data () {
 export default {
   components: {
     AudioForm,
-    AudioComponent
+    AudioComponent,
+    ObjectModal
   },
 
   props: {
