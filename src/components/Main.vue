@@ -1,11 +1,24 @@
 <template>
   <drop class="drop">
-    <div class="field">
-      <input id="switchRoundedOutlinedDefault" type="checkbox" name="switchRoundedOutlinedDefault" class="switch is-rounded is-outlined" @change="setEdit($event.target.checked)" :checked="edit">
-      <label for="switchRoundedOutlinedDefault">Edit Mode</label>
+    <div class="navbar is-fixed-top is-white">
+      <div class="navbar-menu is-active">
+        <div class="navbar-start">
+          <div class="navbar-item">
+            <div class="field">
+              <input id="switchRoundedOutlinedDefault" type="checkbox" name="switchRoundedOutlinedDefault" class="switch is-rounded is-outlined" @change="setEdit($event.target.checked)" :checked="edit">
+              <label for="switchRoundedOutlinedDefault">Edit Mode</label>
+            </div>
+          </div>
+        </div>
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <window-controls />
+          </div>
+        </div>
+      </div>
     </div>
-    <window-controls />
-    <div style="overflow-x: hidden; overflow-y: auto; flex: 1;">
+
+    <main>
       <grid-layout
         :layout.sync="layout"
         :col-num="6"
@@ -29,7 +42,7 @@
           <group-component :id="item.i" />
         </grid-item>
       </grid-layout>
-    </div>
+    </main>
     <!-- <span style="position: absolute; top: 0; left: 0; width: 20px; height: 99vh; background-color: yellow;" /> -->
   </drop>
 </template>
@@ -78,12 +91,20 @@ export default {
 </script>
 
 <style lang="scss">
+main {
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 1;
+  padding-top: 12px;
+}
+
 .drop {
   height: 100vh;
   width: 100%;
   max-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 3.25rem;
 }
 
 .groups {

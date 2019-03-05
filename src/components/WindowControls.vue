@@ -64,10 +64,10 @@ export default {
 
 <style lang="scss">
 .window-controls {
-  position: absolute;
-  right: 0;
-  top: 0;
-  left: auto;
+  // position: absolute;
+  // right: 0;
+  // top: 0;
+  // left: auto;
   padding: 0;
   margin: 0;
 
