@@ -47,7 +47,7 @@ export default {
   computed: {
     ...mapState({
       audio: function (state) {
-        return clone(state.audio.items.find(a => a.id === this.audioId))
+        return clone(state.audio.items[this.audioId])
       }
     })
   },

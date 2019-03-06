@@ -1,11 +1,15 @@
 <template>
   <div class="group box">
-    <b-tag primary medium class="name">{{ group.name }}</b-tag>
+    <div class="top">
+      <b-tag primary medium class="name">{{ group.name }}</b-tag>
+      <edit-group v-if="edit" :group-id="group.id" />
+    </div>
+
     <div style="display: inline-block; padding: 8px;">
       <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" :is-static="edit">
-        <edit-audio v-if="edit" :audioId="audioInfo.id" />
+        <edit-audio v-if="edit" :audio-id="audioInfo.id" />
       </audio-component>
-      <add-audio :groupId="group.id" v-if="edit"/>
+      <add-audio :group-id="group.id" v-if="edit"/>
     </div>
   </div>
 </template>
@@ -14,12 +18,14 @@
 import AudioComponent from './AudioComponent'
 import AddAudio from './AddAudio'
 import EditAudio from './EditAudio.vue'
+import EditGroup from './EditGroup.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     AddAudio,
     EditAudio,
+    EditGroup,
     AudioComponent
   },
 
@@ -32,10 +38,15 @@ export default {
 
   computed: {
     ...mapState({
-      group (state) { return state.groups.items.find(g => g.id === this.id) },
-      audio (state) { return state.audio.items.filter(a => a.groupId === this.group.id) },
+      group (state) { return state.groups.items[this.id] },
       edit: state => state.edit
-    })
+    }),
+
+    // ...mapGetters('audioList'),
+
+    audio () {
+      return this.$store.getters.audioList.filter(audio => audio.groupId === this.group.id)
+    }
   }
 }
 </script>
@@ -59,10 +70,15 @@ export default {
   overflow-y: auto;
 }
 
-.name {
+.top {
   position: absolute;
   top: 0;
   transform:translateY(-50%);
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  right: 12px;
+  left: 12px;
 }
 </style>

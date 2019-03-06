@@ -1,53 +1,66 @@
 import uuidv4 from 'uuid/v4'
+import Vue from 'vue'
 
 const state = {
-  items: [{
-    id: 'aaa',
-    name: 'Test',
-    grid: {
-      'x': 0,
-      'y': 0,
-      'w': 1,
-      'h': 1
-    }
-  },
-  {
-    id: 'aaB',
-    name: 'Test',
-    grid: {
-      'x': 1,
-      'y': 0,
-      'w': 1,
-      'h': 1
-    }
-  }]
+  items: {},
+  groupsPerRow: 6
+}
+
+const getters = {
+  groupIds: state => Object.keys(state.items),
+  groupList: state => Object.values(state.items)
 }
 
 const mutations = {
-  addGroup (state, group) {
-    state.items.push(group)
-  },
-
-  updateGroup (state, group) {
-    const index = state.items.findIndex(a => a.id === group.id)
-    state.items[index] = group
+  setGroup (state, group) {
+    Vue.set(state.items, group.id, group)
   },
 
   removeGroup (state, group) {
-    state.items = state.items.filter(a => a.id !== group.id)
+    Vue.delete(state.items, group.id)
   }
 }
 
 const actions = {
   addGroup (context, { name }) {
-    context.commit('addGroup', {
+    if (context.getters.groupIds.length) {
+      let lastGroupGrid
+      context.getters.groupList.forEach(group => {
+        if (!lastGroupGrid || (group.grid.y >= lastGroupGrid.y && group.grid.x > lastGroupGrid.x)) {
+          lastGroupGrid = group.grid
+        }
+      })
+
+      var x
+      var y
+      if (lastGroupGrid.x === context.state.groupsPerRow - 1) {
+        x = 0
+        y = lastGroupGrid.y + lastGroupGrid.h
+      } else {
+        x = lastGroupGrid.x + lastGroupGrid.w
+        y = lastGroupGrid.y
+      }
+    } else {
+      x = 0
+      y = 0
+    }
+
+    var grid = {
+      x,
+      y,
+      w: 1,
+      h: 1
+    }
+
+    context.commit('setGroup', {
       id: uuidv4(),
-      name
+      name,
+      grid
     })
   },
 
   updateGroup (context, group) {
-    context.commit('updateGroup', group)
+    context.commit('setGroup', group)
   },
 
   removeGroup (context, group) {
@@ -57,6 +70,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions
 }

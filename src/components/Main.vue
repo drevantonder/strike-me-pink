@@ -9,6 +9,9 @@
               <label for="switchRoundedOutlinedDefault">Edit Mode</label>
             </div>
           </div>
+          <div class="navbar-item" v-if="edit">
+            <add-group />
+          </div>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
@@ -20,8 +23,8 @@
 
     <main>
       <grid-layout
-        :layout.sync="layout"
-        :col-num="6"
+        :layout="layout"
+        :col-num="groupsPerRow"
         :row-height="150"
         :is-draggable="edit"
         :is-resizable="edit"
@@ -51,14 +54,16 @@
 import VueGridLayout from 'vue-grid-layout'
 import GroupComponent from './GroupComponent'
 import WindowControls from './WindowControls'
+import AddGroup from './AddGroup.vue'
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
     GroupComponent,
     WindowControls,
-    GridLayout: VueGridLayout.GridLayout
+    GridLayout: VueGridLayout.GridLayout,
+    AddGroup
   },
 
   data () {
@@ -68,14 +73,22 @@ export default {
   },
 
   created () {
-    this.layout = this.groups.map(g => Object.assign({}, { ...g.grid, i: g.id }))
+    this.layout = this.groupList.map(group => Object.assign({}, { ...group.grid, i: group.id }))
   },
 
   computed: {
     ...mapState({
       groups: state => state.groups.items,
-      edit: state => state.edit
-    })
+      edit: state => state.edit,
+      groupsPerRow: state => state.groups.groupsPerRow
+    }),
+    ...mapGetters(['groupList'])
+  },
+
+  watch: {
+    groupList () {
+      this.layout = this.groupList.map(group => Object.assign({}, { ...group.grid, i: group.id }))
+    }
   },
 
   methods: {
@@ -83,7 +96,7 @@ export default {
 
     onLayoutUpdated (layout) {
       layout.forEach(function (grid) {
-        this.updateGroup({ ...this.groups.find(g => g.id === grid.i), grid })
+        this.updateGroup({ ...this.groups[grid.i], grid })
       }.bind(this))
     }
   }
