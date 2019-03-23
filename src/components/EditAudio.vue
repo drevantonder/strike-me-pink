@@ -1,7 +1,6 @@
 <template>
-  <span style="pointer-events: auto;">
-    <b-button @click="open">Edit</b-button>
-    <b-button @click="removeAudio(audio)">Delete</b-button>
+  <span style="pointer-events: auto; margin-left: auto;">
+    <edit-icons @edit="open" @remove="removeAudio(audio)"/>
 
     <object-modal :active.sync="active" title="Edit Audio" @save="save" @close="close">
       <audio-form v-bind.sync="audio" />
@@ -14,6 +13,7 @@
 </template>
 
 <script>
+import EditIcons from './EditIcons.vue'
 import AudioForm from './forms/AudioForm.vue'
 import AudioComponent from './AudioComponent.vue'
 import ObjectModal from './ObjectModal.vue'
@@ -30,7 +30,8 @@ export default {
   components: {
     AudioForm,
     AudioComponent,
-    ObjectModal
+    ObjectModal,
+    EditIcons
   },
 
   props: {

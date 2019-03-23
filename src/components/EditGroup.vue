@@ -1,7 +1,6 @@
 <template>
   <div style="margin-left: auto;">
-    <b-button @click="open" rounded small><i class="fa fa-pencil"/></b-button>
-    <b-button @click="remove" rounded small><i class="fa fa-trash"/></b-button>
+    <edit-icons @edit="open" @remove="remove" />
 
     <object-modal :active.sync="active" title="Add Group" @save="save" @close="close">
       <group-form v-bind.sync="group" />
@@ -10,6 +9,7 @@
 </template>
 
 <script>
+import EditIcons from './EditIcons.vue'
 import GroupForm from './forms/GroupForm'
 import { mapActions, mapState } from 'vuex'
 import ObjectModal from './ObjectModal.vue'
@@ -24,7 +24,8 @@ function data () {
 export default {
   components: {
     GroupForm,
-    ObjectModal
+    ObjectModal,
+    EditIcons
   },
 
   props: {

@@ -7,7 +7,9 @@
 
     <div style="display: inline-block; padding: 8px;">
       <audio-component v-for="audioInfo in audio" :key="audioInfo.dir" :audio-info="audioInfo" :is-static="edit">
-        <edit-audio v-if="edit" :audio-id="audioInfo.id" />
+        <div class="top">
+          <edit-audio v-if="edit" :audio-id="audioInfo.id" />
+        </div>
       </audio-component>
       <add-audio :group-id="group.id" v-if="edit"/>
     </div>

@@ -1,17 +1,57 @@
 <template>
-  <b-button @click="togglePlay" large :static="isStatic" class="my-audio">
-    <span class="my-text">
-      <i class="fal fa-compact-disc" :class="playIcon"></i>&nbsp;{{ audioInfo.name }}
-    </span>
-    <span class="my-progress" :style="{ 'width': progress }" />
+  <div large :static="isStatic" class="box ac-box">
+    <div class="ac-context">
+      <span class="ac-controls">
+        <a @click="togglePlay">
+          <span class="icon" :class="activeColor">
+            <i class="fas" :class="playIcon"></i>
+          </span>
+        </a>
+        <a @click="stop">
+          <span class="icon" :class="activeColor">
+            <i class="fas fa-stop"></i>
+          </span>
+        </a>
+      </span>
+      <span class="ac-text">
+        {{ audioInfo.name }}
+      </span>
+      <span class="ac-controls">
+        <span>
+          {{ currentTime | SecToTime }}/{{ duration | SecToTime }}
+        </span>
+        <a @click="toggleLoop">
+          <span class="icon" :class="activeColor">
+            <i class="fas" :class="loopIcon"></i>
+          </span>
+        </a>
+      </span>
+    </div>
+
+    <vue-slider :value="currentTime" :max="Math.floor(duration)" :lazy="true" @change="changeCurrentTime" class="ac-slider" :tooltip-formatter="val => SecToTime(val)" />
+    <!-- <span class="my-progress" :style="{ 'width': progress }" /> -->
 
     <slot />
 
-  </b-button>
+  </div>
 </template>
 
 <script>
+import VueSlider from 'vue-slider-component'
+
+function SecToTime (t) {
+  function padZero (v) {
+    return (v < 10) ? '0' + v : v
+  }
+
+  return padZero(parseInt((t / (60)) % 60)) + ':' + padZero(parseInt((t) % 60))
+}
+
 export default {
+  components: {
+    VueSlider
+  },
+
   props: {
     audioInfo: {
       required: true,
@@ -39,41 +79,32 @@ export default {
     }
   },
 
-  mounted () {
-    this.audio = new Audio(this.audioInfo.file)
-
-    this.audio.currentTime = this.currentTime
-    this.audio.loop = this.loop
-
-    if (this.paused) {
-      this.audio.pause()
-    } else {
-      this.audio.play()
-    }
-
-    this.duration = this.audio.duration
-
-    var that = this
-    this.audio.addEventListener('play', () => { that.paused = false })
-    this.audio.addEventListener('pause', () => { that.paused = true })
-    this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
-    this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
+  created () {
+    this.setupAudio()
   },
 
   methods: {
     togglePlay () {
-      if (this.isStatic) {
-        return
-      }
+      if (this.isStatic) return
+
       if (this.paused) {
         this.audio.play()
       } else {
         this.audio.pause()
-        this.audio.currentTime = 0
       }
     },
 
+    stop () {
+      if (this.isStatic) {
+        return
+      }
+      this.audio.pause()
+      this.audio.currentTime = 0
+    },
+
     toggleLoop () {
+      if (this.isStatic) return
+
       if (this.loop) {
         this.audio.loop = false
         this.loop = false
@@ -83,45 +114,71 @@ export default {
       }
     },
 
-    changeCurrentTime (e) {
-      const element = this.$refs.currentTime.$el
-      this.currentTime = ((e.pageX - element.offsetLeft) / element.offsetWidth) * this.duration
+    changeCurrentTime (time) {
+      this.currentTime = time
       this.audio.currentTime = this.currentTime
     },
 
     openEditModal (e) {
       this.editModalActive = true
-    }
+    },
+
+    setupAudio () {
+      if (this.audioInfo.file === undefined) return
+      if (this.audio) {
+        this.audio.source = this.audioInfo.file
+        this.audio.load()
+      } else {
+        this.audio = new Audio(this.audioInfo.file)
+      }
+
+      this.audio.currentTime = this.currentTime
+      this.audio.loop = this.loop
+
+      if (this.paused) {
+        this.audio.pause()
+      } else {
+        this.audio.play()
+      }
+
+      this.duration = this.audio.duration
+
+      var that = this
+      this.audio.addEventListener('play', () => { that.paused = false })
+      this.audio.addEventListener('pause', () => { that.paused = true })
+      this.audio.addEventListener('timeupdate', () => { that.currentTime = that.audio.currentTime })
+      this.audio.addEventListener('durationchange', () => { that.duration = that.audio.duration })
+    },
+
+    SecToTime
   },
 
   watch: {
     'audioInfo.volume' () {
       this.audio.volume = this.audioInfo.volume / 100
+    },
+
+    'audioInfo.file' () {
+      this.setupAudio()
     }
   },
 
   computed: {
     playIcon () {
-      return this.paused ? '' : 'fas fa-spin'
+      return this.paused ? 'fa-play' : 'fa-pause'
     },
 
     loopIcon () {
-      return this.loop ? 'far' : 'fal'
+      return this.loop ? 'fa-repeat' : 'fa-arrow-to-right'
     },
 
-    progress () {
-      return (this.currentTime / this.duration * 100).toString() + '%'
+    activeColor () {
+      return this.isStatic ? 'has-text-grey' : 'has-text-primary'
     }
   },
 
   filters: {
-    SecToTime (t) {
-      function padZero (v) {
-        return (v < 10) ? '0' + v : v
-      }
-
-      return padZero(parseInt((t / (60)) % 60)) + ':' + padZero(parseInt((t) % 60))
-    }
+    SecToTime
   },
 
   destroyed () {
@@ -131,27 +188,43 @@ export default {
 </script>
 
 <style lang="scss">
-.my-audio {
+.ac-box {
   display: flex;
   position: relative;
-  margin: 16px 0;
+  flex-direction: column;
+  justify-content: space-between;
 
-  .my-text {
-    z-index: 1;
-    background-color: transparent;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  .ac-context {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .ac-controls {
+      z-index: 1;
+    }
+
+    .ac-text {
+      z-index: 1;
+      background-color: transparent;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ac-progress {
+      position: absolute;
+      display: block;
+      min-height: 100%;
+      border-radius: inherit;
+      background-color: rgb(43,194,83);
+      overflow: hidden;
+      top: 0;
+      left: 0;
+    }
   }
 
-  .my-progress {
-    position: absolute;
-    display: block;
-    min-height: 100%;
-    border-radius: inherit;
-    background-color: rgb(43,194,83);
-    overflow: hidden;
-    left: 0;
+  .ac-slider {
+    margin-top: 8px;
   }
 }
 </style>
