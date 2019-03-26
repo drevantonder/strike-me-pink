@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import modules from './modules'
-
-import { createPersistedState } from 'vuex-electron'
+import db from './db'
 
 Vue.use(Vuex)
 
@@ -28,6 +27,6 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules,
-  plugins: [createPersistedState()],
+  plugins: [db('db.json')],
   strict: process.env.NODE_ENV !== 'production'
 })

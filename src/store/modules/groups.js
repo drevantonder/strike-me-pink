@@ -72,5 +72,6 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
+  persist: true
 }
