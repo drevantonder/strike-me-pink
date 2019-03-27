@@ -12,6 +12,9 @@
           <div class="navbar-item" v-if="edit">
             <add-group />
           </div>
+          <div class="navbar-item">
+            <save-file />
+          </div>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
@@ -55,6 +58,7 @@ import VueGridLayout from 'vue-grid-layout'
 import GroupComponent from './GroupComponent'
 import WindowControls from './WindowControls'
 import AddGroup from './AddGroup.vue'
+import SaveFile from './SaveFile.vue'
 
 import { mapState, mapActions, mapGetters } from 'vuex'
 
@@ -63,7 +67,8 @@ export default {
     GroupComponent,
     WindowControls,
     GridLayout: VueGridLayout.GridLayout,
-    AddGroup
+    AddGroup,
+    SaveFile
   },
 
   data () {

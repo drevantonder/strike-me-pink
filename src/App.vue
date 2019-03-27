@@ -8,10 +8,18 @@
 <script>
 import Main from './components/Main.vue'
 
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     MainComponent: Main
-  }
+  },
+
+  created () {
+    this.loadCurrentFile()
+  },
+
+  methods: mapActions(['loadCurrentFile'])
 }
 </script>
 
