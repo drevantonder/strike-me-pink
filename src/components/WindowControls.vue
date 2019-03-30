@@ -14,6 +14,7 @@
 
 <script>
 import { remote } from 'electron'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -22,7 +23,6 @@ export default {
       maximized: false
     }
   },
-
   mounted () {
     var self = this
 
@@ -37,6 +37,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['saveProject']),
+
     minimize () {
       this.window.minimize()
     },
@@ -50,11 +52,33 @@ export default {
     },
 
     close () {
+      if (this.hasUnsavedChanges) {
+        var buttons = ['Save and close', 'Close without saving', 'Cancel']
+
+        var indexOfButtonClicked = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+          type: 'warning',
+          message: 'Warning, you have unsaved changes.',
+          buttons: buttons,
+          defaultId: buttons.indexOf('Cancel'),
+          cancelId: buttons.indexOf('Cancel')
+        })
+
+        var button = buttons[indexOfButtonClicked]
+        if (button === 'Cancel') {
+          return
+        } else if (button === 'Save and close') {
+          this.saveProject()
+        }
+      }
       this.window.close()
     }
   },
 
   computed: {
+    ...mapState({
+      hasUnsavedChanges: state => state.persist.hasUnsavedChanges
+    }),
+
     maximizeIcon () {
       return this.maximized ? 'fa-compress-alt' : 'fa-expand-alt'
     }
