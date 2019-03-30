@@ -2,7 +2,12 @@
   <drop class="drop">
     <nav class="navbar is-fixed-top is-white">
       <div class="filename is-size-6">
-        {{ currentFile | getFileAttribute('base') }}<template v-if="hasUnsavedChanges">*</template>
+        <template v-if="currentFile !== undefined">
+          {{ currentFile | getFileAttribute('base') }}<template v-if="hasUnsavedChanges">*</template>
+        </template>
+        <template v-else>
+          Unsaved Project
+        </template>
       </div>
       <div class="navbar-drag" />
       <div class="navbar-menu">
