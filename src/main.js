@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import path from 'path'
 import './sass/main.sass'
 import '@fortawesome/fontawesome-pro/css/all.css'
 
@@ -16,6 +17,18 @@ Vue.use(VueDragDrop)
 Vue.component('GlobalEvents', GlobalEvents)
 
 Vue.config.productionTip = false
+
+Vue.filter('getFileAttribute', (file, attribute) => {
+  try {
+    return path.parse(file)[attribute]
+  } catch (error) {
+    // see https://nodejs.org/docs/latest/api/path.html#path_path_parse_path
+    // TypeError is throw if path.parse's parameter is not a string
+    if (!(error instanceof TypeError)) {
+      throw error
+    }
+  }
+})
 
 // https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/commonIssues.html#exceptions-in-async-functions-not-getting-logged-to-console
 process.on('unhandledRejection', error => {
