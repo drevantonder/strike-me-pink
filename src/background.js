@@ -7,6 +7,8 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib'
 import debug from 'electron-debug'
 
+require('update-electron-app')()
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 debug()
