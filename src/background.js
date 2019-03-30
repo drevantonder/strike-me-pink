@@ -6,8 +6,9 @@ import {
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
 import debug from 'electron-debug'
+import { autoUpdater } from 'electron-updater'
 
-require('update-electron-app')()
+autoUpdater.checkForUpdatesAndNotify()
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 

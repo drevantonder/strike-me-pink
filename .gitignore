@@ -26,3 +26,5 @@ src/App.vue
 
 # Font Awesome
 .npmrc
+
+electron-builder.yml
