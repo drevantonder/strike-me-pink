@@ -1,6 +1,6 @@
 {
   "name": "strike-me-pink",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Andre van Tonder",
   "private": true,
   "repository": "https://github.com/DrevanTonder/strike-me-pink",
@@ -18,7 +18,6 @@
     "bulma": "0.7.4",
     "bulma-switch": "2.0.0",
     "electron-store": "3.0.0",
-    "lowdb": "1.0.0",
     "portal-vue": "1.5.1",
     "update-electron-app": "1.3.0",
     "uuid": "3.3.2",

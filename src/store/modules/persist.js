@@ -1,13 +1,9 @@
-import low from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
 import Store from 'electron-store'
+import fs from 'fs'
 
 const { dialog, getCurrentWindow } = require('electron').remote
 
 const electronStore = new Store()
-
-var adapter
-var db
 
 const fileFilters = [{ name: 'Strike Me Pink File', extensions: ['smp'] }]
 
@@ -34,6 +30,9 @@ const getModules = store => {
 }
 
 const getModulesToPersist = store => getModules(store).filter(module => module._rawModule.persist)
+
+const readJsonFile = file => JSON.parse(fs.readFileSync(file))
+const writeJsonFile = (file, data) => fs.writeFileSync(file, JSON.stringify(data))
 
 const state = {
   currentFile: undefined,
@@ -63,20 +62,19 @@ const actions = {
     this.subscribe((mutation, state) => {
       if (mutation.type === 'setHasUnsavedChanges') return
 
+      var change = false
       getModulesToPersist(this).forEach(module => {
         if (module._rawModule.mutations[mutation.type] !== undefined) {
-          if (context.state.autoSave) {
-            var moduleState = this.state[module.name]
-
-            db.set(module.name, moduleState)
-              .write()
-
-            context.commit('setHasUnsavedChanges', false)
-          } else {
-            context.commit('setHasUnsavedChanges', true)
-          }
+          change = true
         }
       })
+
+      if (context.state.autoSave && change) {
+        context.dispatch('saveToCurrentFile')
+        context.commit('setHasUnsavedChanges', false)
+      } else {
+        context.commit('setHasUnsavedChanges', true)
+      }
     })
   },
 
@@ -127,19 +125,20 @@ const actions = {
 
     context.dispatch('setCurrentFile', currentFile)
 
-    this.replaceState({ ...this.state, ...db.getState() })
+    this.replaceState({ ...this.state, ...readJsonFile(currentFile) })
 
     context.dispatch('saveToCurrentFile')
   },
 
   saveToCurrentFile (context) {
     var persistModules = getModulesToPersist(this)
-    var defaults = {}
+    var data = {}
 
     persistModules.forEach(module => {
-      defaults[module.name] = this.state[module.name]
+      data[module.name] = this.state[module.name]
     })
-    db.defaults(defaults).write()
+
+    writeJsonFile(context.state.currentFile, data)
 
     context.commit('setHasUnsavedChanges', false)
   },
@@ -148,9 +147,6 @@ const actions = {
     context.commit('setCurrentFile', undefined)
 
     electronStore.delete('currentFile')
-
-    adapter = undefined
-    db = undefined
   },
 
   setCurrentFile (context, file) {
@@ -158,9 +154,6 @@ const actions = {
 
     // save the file in user data so that we know which file to open up startup
     electronStore.set('currentFile', file)
-
-    adapter = new FileSync(file)
-    db = low(adapter)
 
     context.dispatch('saveToCurrentFile')
   },
