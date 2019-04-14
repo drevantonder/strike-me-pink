@@ -8,8 +8,6 @@ import {
 import debug from 'electron-debug'
 import { autoUpdater } from 'electron-updater'
 
-autoUpdater.checkForUpdatesAndNotify()
-
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 debug()
@@ -76,6 +74,11 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+
+  autoUpdater.checkForUpdates()
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('currentVersion', autoUpdater.currentVersion)
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.

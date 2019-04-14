@@ -16,10 +16,10 @@ export default {
   },
 
   created () {
-    this.load()
+    this.init()
   },
 
-  methods: mapActions(['load'])
+  methods: mapActions(['init'])
 }
 </script>
 

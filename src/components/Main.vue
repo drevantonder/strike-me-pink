@@ -82,6 +82,7 @@
       </grid-layout>
     </main>
     <!-- <span style="position: absolute; top: 0; left: 0; width: 20px; height: 99vh; background-color: yellow;" /> -->
+    <span>v{{ currentVersion }}</span>
   </drop>
 </template>
 
@@ -118,7 +119,8 @@ export default {
       autoSave: state => state.persist.autoSave,
       currentFile: state => state.persist.currentFile,
       hasUnsavedChanges: state => state.persist.hasUnsavedChanges,
-      groupsPerRow: state => state.groups.groupsPerRow
+      groupsPerRow: state => state.groups.groupsPerRow,
+      currentVersion: state => state.update.currentVersion
     }),
     ...mapGetters(['groupList', 'currentFileName'])
   },
