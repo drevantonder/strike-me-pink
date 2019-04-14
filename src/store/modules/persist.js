@@ -55,7 +55,7 @@ const mutations = {
 }
 
 const actions = {
-  load (context) {
+  init (context) {
     context.dispatch('loadCurrentFile')
     context.dispatch('loadAutoSave')
 
@@ -102,6 +102,7 @@ const actions = {
     if (!currentFile) return
 
     context.dispatch('setCurrentFile', currentFile)
+    context.dispatch('saveToCurrentFile')
   },
 
   openProject (context) {
@@ -126,6 +127,7 @@ const actions = {
     context.dispatch('setCurrentFile', currentFile)
 
     this.replaceState({ ...this.state, ...readJsonFile(currentFile) })
+    console.log(readJsonFile(currentFile))
 
     context.dispatch('saveToCurrentFile')
   },
@@ -154,8 +156,6 @@ const actions = {
 
     // save the file in user data so that we know which file to open up startup
     electronStore.set('currentFile', file)
-
-    context.dispatch('saveToCurrentFile')
   },
 
   // Automatic saving
