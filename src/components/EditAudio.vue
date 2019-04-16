@@ -17,12 +17,13 @@ import EditIcons from './EditIcons.vue'
 import AudioForm from './forms/AudioForm.vue'
 import AudioComponent from './AudioComponent.vue'
 import ObjectModal from './ObjectModal.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { clone } from '../util'
 
 function data () {
   return {
-    active: false
+    active: false,
+    audio: undefined
   }
 }
 
@@ -45,12 +46,14 @@ export default {
     return data()
   },
 
-  computed: {
-    ...mapState({
-      audio: function (state) {
-        return clone(state.audio.items[this.audioId])
-      }
-    })
+  created () {
+    this.getAudio()
+  },
+
+  watch: {
+    audioId () {
+      this.getAudio()
+    }
   },
 
   methods: {
@@ -71,6 +74,11 @@ export default {
 
     reset () {
       Object.assign(this.$data, data())
+      this.getAudio()
+    },
+
+    getAudio () {
+      this.audio = clone(this.$store.state.audio.items[this.audioId])
     },
 
     ...mapActions({

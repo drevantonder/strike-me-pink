@@ -1,36 +1,39 @@
 <template>
   <div large :static="isStatic" class="box ac-box">
-    <div class="ac-context">
-      <span class="ac-controls">
-        <a @click="togglePlay">
-          <span class="icon" :class="activeColor">
-            <i class="fas" :class="playIcon"></i>
-          </span>
-        </a>
-        <a @click="stop">
-          <span class="icon" :class="activeColor">
-            <i class="fas fa-stop"></i>
-          </span>
-        </a>
-      </span>
-      <span class="ac-text">
-        {{ audioInfo.name }}
-      </span>
-      <span class="ac-controls">
-        <span>
-          {{ currentTime | SecToTime }}/{{ duration | SecToTime }}
+    <template v-if="fileExists">
+      <div class="ac-context">
+        <span class="ac-controls">
+          <a @click="togglePlay">
+            <span class="icon" :class="activeColor">
+              <i class="fas" :class="playIcon"></i>
+            </span>
+          </a>
+          <a @click="stop">
+            <span class="icon" :class="activeColor">
+              <i class="fas fa-stop"></i>
+            </span>
+          </a>
         </span>
-        <a @click="toggleLoop">
-          <span class="icon" :class="activeColor">
-            <i class="fas" :class="loopIcon"></i>
+        <span class="ac-text">
+          {{ audioInfo.name }}
+        </span>
+        <span class="ac-controls">
+          <span>
+            {{ currentTime | SecToTime }}/{{ duration | SecToTime }}
           </span>
-        </a>
-      </span>
-    </div>
+          <a @click="toggleLoop">
+            <span class="icon" :class="activeColor">
+              <i class="fas" :class="loopIcon"></i>
+            </span>
+          </a>
+        </span>
+      </div>
 
-    <vue-slider :value="currentTime" :max="Math.floor(duration)" :lazy="true" @change="changeCurrentTime" class="ac-slider" :tooltip-formatter="val => SecToTime(val)" />
-    <!-- <span class="my-progress" :style="{ 'width': progress }" /> -->
-
+      <vue-slider :value="currentTime" :max="Math.floor(duration)" :lazy="true" @change="changeCurrentTime" class="ac-slider" :tooltip-formatter="val => SecToTime(val)" />
+    </template>
+    <template v-else>
+      <p class="has-text-danger"><i class="fal fa-exclamation-triangle"></i>&nbsp;Could not find file, please edit and locate file</p>
+    </template>
     <slot />
 
   </div>
@@ -38,6 +41,8 @@
 
 <script>
 import VueSlider from 'vue-slider-component'
+import fs from 'fs'
+import path from 'path'
 
 function SecToTime (t) {
   function padZero (v) {
@@ -128,8 +133,14 @@ export default {
       if (this.audio) {
         this.audio.source = this.audioInfo.file
         this.audio.load()
+        console.log(this.audioInfo.file)
+        console.log(this.audio)
       } else {
-        this.audio = new Audio(this.audioInfo.file)
+        if (this.fileExists) {
+          this.audio = new Audio(this.audioInfo.file)
+        } else {
+          return
+        }
       }
 
       this.audio.currentTime = this.currentTime
@@ -155,7 +166,9 @@ export default {
 
   watch: {
     'audioInfo.volume' () {
-      this.audio.volume = this.audioInfo.volume / 100
+      if (this.audio) {
+        this.audio.volume = this.audioInfo.volume / 100
+      }
     },
 
     'audioInfo.file' () {
@@ -174,6 +187,14 @@ export default {
 
     activeColor () {
       return this.isStatic ? 'has-text-grey' : 'has-text-primary'
+    },
+
+    fileExists () {
+      if (this.audioInfo.file) {
+        return path.extname(this.audioInfo.file) && fs.existsSync(this.audioInfo.file)
+      } else {
+        return true
+      }
     }
   },
 
@@ -182,7 +203,9 @@ export default {
   },
 
   destroyed () {
-    this.audio.pause()
+    if (this.audio) {
+      this.audio.pause()
+    }
   }
 }
 </script>

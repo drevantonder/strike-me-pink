@@ -127,7 +127,6 @@ const actions = {
     context.dispatch('setCurrentFile', currentFile)
 
     this.replaceState({ ...this.state, ...readJsonFile(currentFile) })
-    console.log(readJsonFile(currentFile))
 
     context.dispatch('saveToCurrentFile')
   },

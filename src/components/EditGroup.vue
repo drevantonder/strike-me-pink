@@ -11,13 +11,14 @@
 <script>
 import EditIcons from './EditIcons.vue'
 import GroupForm from './forms/GroupForm'
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import ObjectModal from './ObjectModal.vue'
 import { clone } from '../util'
 
 function data () {
   return {
-    active: false
+    active: false,
+    group: undefined
   }
 }
 
@@ -39,12 +40,14 @@ export default {
     return data()
   },
 
-  computed: {
-    ...mapState({
-      group: function (state) {
-        return clone(state.groups.items[this.groupId])
-      }
-    })
+  created () {
+    this.getGroup()
+  },
+
+  watch: {
+    groupId () {
+      this.getGroup()
+    }
   },
 
   methods: {
@@ -69,8 +72,13 @@ export default {
       this.reset()
     },
 
+    getGroup () {
+      this.group = clone(this.$store.state.groups.items[this.groupId])
+    },
+
     reset () {
       Object.assign(this.$data, data())
+      this.getGroup()
     },
 
     ...mapActions(['updateGroup', 'removeGroup', 'removeAudioByGroup'])

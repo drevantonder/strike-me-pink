@@ -47,12 +47,6 @@ export default {
   },
 
   computed: {
-    filePath: {
-      get () {
-        return path.join(this.file.dir, this.file.base)
-      }
-    },
-
     fileName () {
       return this.file ? path.basename(this.file) : 'None selected 😢'
     }
