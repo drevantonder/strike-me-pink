@@ -75,7 +75,7 @@ app.on('ready', async () => {
   }
   createWindow()
 
-  autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdatesAndNotify()
   win.webContents.on('did-finish-load', () => {
     win.webContents.send('currentVersion', autoUpdater.currentVersion)
   })
